@@ -162,20 +162,6 @@ class HBNBCommand(cmd.Cmd):
                 print(res)
         return
 
-    def parse_update_command(self, command):
-        # Remove leading and trailing whitespace, and strip the outermost parentheses
-        command = command.strip().lstrip("update(").rstrip(")")
-
-        # Split the command string at the commas
-        parts = command.split(", ")
-
-        # Extract the instance ID, attribute name, and value
-        instance_id = parts[0].strip().strip('"')
-        attribute_name = parts[1].strip().strip('"')
-        value_str = parts[2].strip()
-
-        return [instance_id, attribute_name, value_str]
-
     def default(self, arg):
         args = arg.split('.', 1)
         if args[0] in self.class_opts:
@@ -184,17 +170,16 @@ class HBNBCommand(cmd.Cmd):
             elif args[1].strip('()') == 'count':
                 self.count(args[0])
             elif args[1].split('(')[0] == 'show':
-                inst_id = args[1].split('(')[1].strip(')').replace('"', '').replace("'", '')
+                inst_id = args[1].split('(')[1].strip(')') \
+                            .replace('"', '').replace("'", '')
                 self.do_show(args[0] + ' ' + inst_id)
             elif args[1].split('(')[0] == 'destroy':
-                inst_id = args[1].split('(')[1].strip(')').replace('"', '').replace("'", '')
+                inst_id = args[1].split('(')[1].strip(')') \
+                            .replace('"', '').replace("'", '')
                 self.do_destroy(args[0] + ' ' + inst_id)
             elif args[1].split('(')[0] == 'update':
-                inst = args[1].split('(')[1].strip(')').replace(',', '').replace("'", '').replace('"', '')
-                #print(args[1])
-                #inst = self.parse_update_command(args[1])
-                #print(inst)
-                #print(args[0] + " " + inst)
+                inst = args[1].split('(')[1].strip(')').replace(',', '') \
+                        .replace("'", '').replace('"', '')
                 self.do_update(args[0] + ' ' + inst)
             else:
                 print('*** Unknown syntax: ' + arg)
