@@ -178,13 +178,28 @@ class HBNBCommand(cmd.Cmd):
                             .replace('"', '').replace("'", '')
                 self.do_destroy(args[0] + ' ' + inst_id)
             elif args[1].split('(')[0] == 'update':
-                inst = args[1].split('(')[1].strip(')').replace(',', '') \
-                        .replace("'", '').replace('"', '')
-                self.do_update(args[0] + ' ' + inst)
+                inst = args[1].split('(')[1].strip(')')
+                if '{' in inst:
+                    inst_len = len(inst.split(', ', 1))
+                else:
+                    inst_len = len(inst.split(', '))
+                if inst_len == 3:
+                    inst = inst.replace(',', '').replace('"', '') \
+                            .replace("'", '')
+                    self.do_update(args[0] + ' ' + inst)
+                elif inst_len == 2:
+                    temp = inst.split(', ', 1)
+                    temp_dict = eval(temp[1])
+                    for k, v in temp_dict.items():
+                        inst = args[0] + ' ' + temp[0] + ' ' + \
+                                str(k) + ' ' + str(v)
+                        self.do_update(inst)
             else:
                 print('*** Unknown syntax: ' + arg)
-        else:
+        elif len(args) == 2:
             print('** class doesn\'t exist **')
+        else:
+            print('*** Unkown syntax: ' + arg)
 
 
 if __name__ == '__main__':
