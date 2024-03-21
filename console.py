@@ -134,9 +134,72 @@ class HBNBCommand(cmd.Cmd):
                 print('** no instance found **')
             else:
                 instance = stored[k]
+                try:
+                    if args[3].isdigit():
+                        args[3] = int(args[3])
+                    elif args[3].replace('.', '', 1).isdigit():
+                        args[3] = float(args[3])
+                    else:
+                        args[3] = args[3].replace('"', '').replace("'", '')
+                except AttributeError:
+                    pass
                 setattr(instance, args[2], args[3])
                 models.storage.save()
         return
+
+    def count(self, arg):
+        args = arg.split()
+        args_len = len(args)
+        if args_len == 1:
+            if args[0] not in self.class_opts:
+                print('** class doesn\'t exist **')
+            else:
+                res = 0
+                stored = models.storage.all()
+                for k in stored:
+                    if k.split('.')[0] == args[0]:
+                        res += 1
+                print(res)
+        return
+
+    def parse_update_command(self, command):
+        # Remove leading and trailing whitespace, and strip the outermost parentheses
+        command = command.strip().lstrip("update(").rstrip(")")
+
+        # Split the command string at the commas
+        parts = command.split(", ")
+
+        # Extract the instance ID, attribute name, and value
+        instance_id = parts[0].strip().strip('"')
+        attribute_name = parts[1].strip().strip('"')
+        value_str = parts[2].strip()
+
+        return [instance_id, attribute_name, value_str]
+
+    def default(self, arg):
+        args = arg.split('.', 1)
+        if args[0] in self.class_opts:
+            if args[1].strip('()') == 'all':
+                self.do_all(args[0])
+            elif args[1].strip('()') == 'count':
+                self.count(args[0])
+            elif args[1].split('(')[0] == 'show':
+                inst_id = args[1].split('(')[1].strip(')').replace('"', '').replace("'", '')
+                self.do_show(args[0] + ' ' + inst_id)
+            elif args[1].split('(')[0] == 'destroy':
+                inst_id = args[1].split('(')[1].strip(')').replace('"', '').replace("'", '')
+                self.do_destroy(args[0] + ' ' + inst_id)
+            elif args[1].split('(')[0] == 'update':
+                inst = args[1].split('(')[1].strip(')').replace(',', '').replace("'", '').replace('"', '')
+                #print(args[1])
+                #inst = self.parse_update_command(args[1])
+                #print(inst)
+                #print(args[0] + " " + inst)
+                self.do_update(args[0] + ' ' + inst)
+            else:
+                print('*** Unknown syntax: ' + arg)
+        else:
+            print('** class doesn\'t exist **')
 
 
 if __name__ == '__main__':
