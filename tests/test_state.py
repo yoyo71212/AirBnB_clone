@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-''' State City '''
+''' Test State '''
 
 import unittest
 from models.state import State
