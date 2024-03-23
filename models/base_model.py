@@ -6,7 +6,21 @@ import models
 
 
 class BaseModel:
-    ''' Define BaseModel class '''
+    '''
+    Define BaseModel class
+
+    Attributes:
+        id (str): The unique identifier for each BaseModel instance
+        created_at (datetime): The datetime when the instance was created
+        updated_at (datetime): The datetime when the instance was updated
+
+    Methods:
+        __init__: Initializes a new instance of the BaseModel class
+        __str__: Returns the string representation of the BaseModel instance
+        save: Updates the 'updated_at' attribute with the current datetime
+        to_dict: Converts the BaseModel instance
+                 into a dictionary representation
+    '''
     def __init__(self, *args, **kwargs):
         ''' BaseModel constructor '''
         if kwargs:
