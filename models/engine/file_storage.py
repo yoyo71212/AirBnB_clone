@@ -12,7 +12,20 @@ from models.review import Review
 
 
 class FileStorage:
-    ''' Define FileStorage class '''
+    '''
+    Define FileStorage class
+
+    Attributes:
+        __file_path (str): The path to the JSON file
+        __objects (dict): Dictionary containing objects
+
+    Methods:
+        __init__: Initializes the FileStorage instance
+        all: Returns the dictionary of objects
+        new: Adds a new object to the dictionary of objects
+        save: Serializes the dictionary of objects into a JSON file
+        reload: Deserializes the JSON file into the dictionary of objects
+    '''
     def __init__(self, file_path='file.json', objects={}):
         self.__file_path = file_path
         self.__objects = objects
