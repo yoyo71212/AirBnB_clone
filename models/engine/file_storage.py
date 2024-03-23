@@ -27,6 +27,7 @@ class FileStorage:
         reload: Deserializes the JSON file into the dictionary of objects
     '''
     def __init__(self, file_path='file.json', objects={}):
+        ''' FileStorage constructor '''
         self.__file_path = file_path
         self.__objects = objects
 
