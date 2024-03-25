@@ -107,7 +107,8 @@ class HBNBCommand(cmd.Cmd):
                 if k.split('.')[0] == args[0]:
                     res.append(str(stored[k]))
         if res:
-            print(res)
+            #print(res)
+            print('\n'.join(res))
         return
 
     def do_update(self, arg):
