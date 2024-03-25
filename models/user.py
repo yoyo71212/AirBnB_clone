@@ -24,3 +24,7 @@ class User(BaseModel):
         self.password = kwargs.get('password', '')
         self.first_name = kwargs.get('first_name', '')
         self.last_name = kwargs.get('last_name', '')
+
+    def save(self):
+        ''' Updates updated_at with the current datetime '''
+        super().save()
