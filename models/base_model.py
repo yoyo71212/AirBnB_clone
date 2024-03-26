@@ -28,6 +28,10 @@ class BaseModel:
                 if (key != "__class__"):
                     if (key == "created_at" or key == "updated_at"):
                         value = datetime.fromisoformat(value)
+                    elif value.isdigit():
+                        value = int(value)
+                    elif value.replace('.', '', 1).isdigit():
+                        value = float(value)
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
